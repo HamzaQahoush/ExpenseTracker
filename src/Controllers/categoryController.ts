@@ -3,30 +3,32 @@ import { Category } from "../Models/Category";
 import { Request, Response } from "express";
 
 const createCategory = async (req: Request, res: Response) => {
+  const {userId} = req.query
+
   try {
-    const { name, user_id } = req.body;
-    if (!name || !user_id) {
+    const {name} = req.body;
+    if (!name) {
       res.status(400).json({ msg: "Please Fill all fields" });
     } else {
       const user_is_exist = await User.findOne({
-        where: { id: user_id },
+        where: { id: userId },
       });
       if (!user_is_exist) {
         res.json({ msg: "user not found" });
       } else {
         const category_is_exist = await Category.findOne({
           where: {
-            user_id: user_id,
+            user_id: userId,
             name: name,
           },
         });
         if (!category_is_exist) {
           const data = {
-            user_id: user_id,
+            user_id: userId,
             name: name,
           };
           await Category.create(data);
-          res.json({ msg: "category created" });
+          res.status(201).json({ "msg": data});
         } else {
           res.json({ msg: "category already exist" });
         }

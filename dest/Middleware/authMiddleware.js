@@ -16,7 +16,9 @@ const requireAuth = (req, res, next) => {
                 res.send("Validation Error , Please Login Again ");
             }
             else {
-                console.log(decodedToken);
+                console.log(decodedToken, "decodedToken");
+                // token.userID= decodedToken.id
+                req.query = { ...req.query, userId: decodedToken.id };
                 next();
             }
         });

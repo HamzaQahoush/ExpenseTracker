@@ -3,14 +3,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const User_1 = require("../Models/User");
 const Category_1 = require("../Models/Category");
 const createCategory = async (req, res) => {
+    const { userId } = req.query;
     try {
-        const { name, user_id } = req.body;
-        if (!name || !user_id) {
+        const { name } = req.body;
+        if (!name) {
             res.status(400).json({ msg: "Please Fill all fields" });
         }
         else {
             const user_is_exist = await User_1.User.findOne({
-                where: { id: user_id },
+                where: { id: userId },
             });
             if (!user_is_exist) {
                 res.json({ msg: "user not found" });
@@ -18,17 +19,17 @@ const createCategory = async (req, res) => {
             else {
                 const category_is_exist = await Category_1.Category.findOne({
                     where: {
-                        user_id: user_id,
+                        user_id: userId,
                         name: name,
                     },
                 });
                 if (!category_is_exist) {
                     const data = {
-                        user_id: user_id,
+                        user_id: userId,
                         name: name,
                     };
                     await Category_1.Category.create(data);
-                    res.json({ msg: "category created" });
+                    res.status(201).json({ "msg": data });
                 }
                 else {
                     res.json({ msg: "category already exist" });
