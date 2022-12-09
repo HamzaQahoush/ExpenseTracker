@@ -35,8 +35,7 @@ const createCategory = async (req: Request, res: Response) => {
   } catch (err) {
     res.json("Error: " + err);
   }
-}
-
+};
 
 const getCategory = async (req: Request, res: Response) => {
   const id = req.params.id;
@@ -44,7 +43,7 @@ const getCategory = async (req: Request, res: Response) => {
     if (id) {
       const checkCategort = await Category.findOne({
         where: {
-          id: id
+          id: id,
         },
       }).then((category: any) => {
         if (!category) {
@@ -57,9 +56,38 @@ const getCategory = async (req: Request, res: Response) => {
   } catch (err) {
     res.json("Error " + err);
   }
-}
+};
 
+const editCategory = async (req: Request, res: Response) => {
+  try {
+    const categID = req.params.id;
+
+    const { name } = req.body;
+    if (!name) {
+      res.status(400).json({ msg: "Please fill all the  fields" });
+    } else {
+      Category.findOne({
+        where: {
+          id: categID,
+        },
+      }).then((category: any) => {
+        if (!category) {
+          res.status(404).json({ msg: "category not found" });
+        } else {
+          category.update({
+            name: name,
+          });
+          res.status(200).json({ msg: "category UPDATED!!", category });
+        }
+      });
+    }
+  } catch (err) {
+    res.json("Error: " + err);
+  }
+};
 
 module.exports = {
-  createCategory,getCategory
+  createCategory,
+  getCategory,
+  editCategory,
 };

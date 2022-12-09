@@ -46,7 +46,7 @@ const getCategory = async (req, res) => {
         if (id) {
             const checkCategort = await Category_1.Category.findOne({
                 where: {
-                    id: id
+                    id: id,
                 },
             }).then((category) => {
                 if (!category) {
@@ -62,6 +62,37 @@ const getCategory = async (req, res) => {
         res.json("Error " + err);
     }
 };
+const editCategory = async (req, res) => {
+    try {
+        const categID = req.params.id;
+        const { name } = req.body;
+        if (!name) {
+            res.status(400).json({ msg: "Please fill all the  fields" });
+        }
+        else {
+            Category_1.Category.findOne({
+                where: {
+                    id: categID,
+                },
+            }).then((category) => {
+                if (!category) {
+                    res.json({ msg: "category not found" });
+                }
+                else {
+                    category.update({
+                        name: name,
+                    });
+                    res.stjson({ msg: "category UPDATED!!", category });
+                }
+            });
+        }
+    }
+    catch (err) {
+        res.json("Error: " + err);
+    }
+};
 module.exports = {
-    createCategory, getCategory
+    createCategory,
+    getCategory,
+    editCategory,
 };
