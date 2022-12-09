@@ -13,6 +13,7 @@ const dbConfig_1 = __importDefault(require("./dbConfig"));
 // const db = require("./Models");
 const userRoutes = require("./Routes/userRoutes");
 const CategoryRoutes = require('./Routes/categoryRoutes');
+const { requireAuth } = require('./Middleware/authMiddleware');
 //setting up your port
 const PORT = process.env.PORT || 8080;
 //assigning the variable app to express
@@ -27,7 +28,8 @@ app.use((0, cookie_parser_1.default)());
 // });
 //routes for the user API
 app.use("/api/users", userRoutes);
-app.use("/api/", CategoryRoutes);
+// routes for categories
+app.use("/api/", requireAuth, CategoryRoutes);
 const start = async () => {
     try {
         const db = await dbConfig_1.default.sync({ force: false });

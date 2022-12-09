@@ -11,6 +11,7 @@ import connection from "./dbConfig";
 // const db = require("./Models");
 const userRoutes = require("./Routes/userRoutes");
 const CategoryRoutes= require('./Routes/categoryRoutes')
+const {requireAuth} = require('./Middleware/authMiddleware')
 //setting up your port
 const PORT = process.env.PORT || 8080;
 
@@ -29,7 +30,8 @@ app.use(cookieParser());
 
 //routes for the user API
 app.use("/api/users", userRoutes);
-app.use("/api/",CategoryRoutes);
+// routes for categories
+app.use("/api/",requireAuth,CategoryRoutes); 
 
 const start = async (): Promise<void> => {
   try {

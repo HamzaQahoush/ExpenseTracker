@@ -1,3 +1,4 @@
+import sequelize from "sequelize";
 import {
   Column,
   DataType,
@@ -43,6 +44,7 @@ export class User extends Model {
   @Column({
     type: DataType.DATE,
     allowNull: true,
+    defaultValue: sequelize.literal("now()"),
   })
   lastLogin: Date;
 }
