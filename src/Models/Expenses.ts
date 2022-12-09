@@ -23,6 +23,7 @@ export class Expenses extends Model {
   user_id: number;
 
   @ForeignKey(() => Category)
+  @Column
   category_id: number;
 
   @Column({
@@ -34,7 +35,6 @@ export class Expenses extends Model {
   @Column({
     type: DataType.DOUBLE,
     allowNull: true,
-    primaryKey: true,
   })
   amount: number;
 }

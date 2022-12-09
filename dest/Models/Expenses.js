@@ -30,6 +30,7 @@ __decorate([
 ], Expenses.prototype, "user_id", void 0);
 __decorate([
     (0, sequelize_typescript_1.ForeignKey)(() => Category_1.Category),
+    sequelize_typescript_1.Column,
     __metadata("design:type", Number)
 ], Expenses.prototype, "category_id", void 0);
 __decorate([
@@ -43,7 +44,6 @@ __decorate([
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.DOUBLE,
         allowNull: true,
-        primaryKey: true,
     }),
     __metadata("design:type", Number)
 ], Expenses.prototype, "amount", void 0);

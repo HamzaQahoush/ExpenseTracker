@@ -6,7 +6,7 @@ const createCategory = async (req: Request, res: Response) => {
   try {
     const { name, user_id } = req.body;
     if (!name || !user_id) {
-      res.status(400).json({ msg: "Please enter all fields" });
+      res.status(400).json({ msg: "Please Fill all fields" });
     } else {
       const user_is_exist = await User.findOne({
         where: { id: user_id },

@@ -7,10 +7,9 @@ const dotnetenv = dotenv.config();
 
 import cookieParser from "cookie-parser";
 import connection from "./dbConfig";
-
-// const db = require("./Models");
 const userRoutes = require("./Routes/userRoutes");
 const CategoryRoutes= require('./Routes/categoryRoutes')
+const expenseRoutes= require('./Routes/expenseRoutes')
 const {requireAuth} = require('./Middleware/authMiddleware')
 //setting up your port
 const PORT = process.env.PORT || 8080;
@@ -32,6 +31,9 @@ app.use(cookieParser());
 app.use("/api/users", userRoutes);
 // routes for categories
 app.use("/api/",requireAuth,CategoryRoutes); 
+// routes for Expneses 
+app.use("/api/",requireAuth,expenseRoutes); 
+
 
 const start = async (): Promise<void> => {
   try {

@@ -7,7 +7,7 @@ const requireAuth=(req:Request,res:Response,next:NextFunction)=>{
 
     //check if token exist and is verifed 
     if (token){
-jwt.verify(token,secretKey, (err,decodedToken)=>{
+    jwt.verify(token,secretKey, (err,decodedToken)=>{
     if (err){
         console.log(err.message);
         res.send('Validation Error , Please Login Again ')

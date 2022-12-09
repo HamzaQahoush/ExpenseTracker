@@ -10,9 +10,9 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const dotnetenv = dotenv_1.default.config();
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const dbConfig_1 = __importDefault(require("./dbConfig"));
-// const db = require("./Models");
 const userRoutes = require("./Routes/userRoutes");
 const CategoryRoutes = require('./Routes/categoryRoutes');
+const expenseRoutes = require('./Routes/expenseRoutes');
 const { requireAuth } = require('./Middleware/authMiddleware');
 //setting up your port
 const PORT = process.env.PORT || 8080;
@@ -30,6 +30,8 @@ app.use((0, cookie_parser_1.default)());
 app.use("/api/users", userRoutes);
 // routes for categories
 app.use("/api/", requireAuth, CategoryRoutes);
+// routes for Expneses 
+app.use("/api/", requireAuth, expenseRoutes);
 const start = async () => {
     try {
         const db = await dbConfig_1.default.sync({ force: false });
