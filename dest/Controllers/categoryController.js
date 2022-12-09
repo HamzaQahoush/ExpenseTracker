@@ -10,7 +10,7 @@ const createCategory = async (req, res) => {
         }
         else {
             const user_is_exist = await User_1.User.findOne({
-                where: { id: user_id }
+                where: { id: user_id },
             });
             if (!user_is_exist) {
                 res.json({ msg: "user not found" });
@@ -19,13 +19,13 @@ const createCategory = async (req, res) => {
                 const category_is_exist = await Category_1.Category.findOne({
                     where: {
                         user_id: user_id,
-                        name: name
-                    }
+                        name: name,
+                    },
                 });
                 if (!category_is_exist) {
                     const data = {
                         user_id: user_id,
-                        name: name
+                        name: name,
                     };
                     await Category_1.Category.create(data);
                     res.json({ msg: "category created" });
@@ -40,6 +40,28 @@ const createCategory = async (req, res) => {
         res.json("Error: " + err);
     }
 };
+const getCategory = async (req, res) => {
+    const id = req.params.id;
+    try {
+        if (id) {
+            const checkCategort = await Category_1.Category.findOne({
+                where: {
+                    id: id
+                },
+            }).then((category) => {
+                if (!category) {
+                    res.json({ msg: "category not found" });
+                }
+                else {
+                    res.json({ msg: "category found", category });
+                }
+            });
+        }
+    }
+    catch (err) {
+        res.json("Error " + err);
+    }
+};
 module.exports = {
-    createCategory
+    createCategory, getCategory
 };

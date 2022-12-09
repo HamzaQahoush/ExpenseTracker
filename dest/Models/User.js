@@ -8,9 +8,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var _a;
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.User = void 0;
+const sequelize_1 = __importDefault(require("sequelize"));
 const sequelize_typescript_1 = require("sequelize-typescript");
 let User = class User extends sequelize_typescript_1.Model {
 };
@@ -54,8 +57,9 @@ __decorate([
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.DATE,
         allowNull: true,
+        defaultValue: sequelize_1.default.literal("now()"),
     }),
-    __metadata("design:type", typeof (_a = typeof dat !== "undefined" && dat) === "function" ? _a : Object)
+    __metadata("design:type", Date)
 ], User.prototype, "lastLogin", void 0);
 User = __decorate([
     (0, sequelize_typescript_1.Table)({ timestamps: true, tableName: "users" })
