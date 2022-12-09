@@ -2,6 +2,7 @@ import { Category } from "../Models/Category";
 import { Request, Response } from "express";
 import { Expenses } from "../Models/Expenses";
 import { User } from "../Models/User";
+import { where } from "sequelize";
 
 const createExpense = async (req: Request, res: Response) => {
   const { userId } = req.query;
@@ -63,8 +64,29 @@ const updateExpense = async (req: Request, res: Response) => {
     res.json("Error: " + err);
   }
 };
+const deleteExpense = async (req: Request, res: Response) => {
+  const { userId } = req.query;
 
+  try {
+    const expenseId: string = req.params.id;
+    Expenses.destroy({
+      where: {
+        id: expenseId,
+        user_id: userId,
+      },
+    }).then((expense: any) => {
+      if (!expense) {
+        res.status(404).json({ msg: "expense Not found " });
+      } else {
+        res.status(202).json({ msg: "Expense DELETED!!" });
+      }
+    });
+  } catch (err) {
+    res.json("Error: " + err);
+  }
+};
 module.exports = {
   createExpense,
   updateExpense,
+  deleteExpense,
 };

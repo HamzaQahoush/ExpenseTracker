@@ -33,9 +33,11 @@ const createExpense = async (req, res) => {
 const updateExpense = async (req, res) => {
     try {
         const expenseId = req.params.id;
-        const { amount: number, spendingDate } = req.body;
+        const { amount, spendingDate } = req.body;
         if (!amount) {
-            res.status(400).json({ msg: "Please fill all the expense you wanna change" });
+            res
+                .status(400)
+                .json({ msg: "Please fill all the expense you wanna change" });
         }
         else {
             Expenses_1.Expenses.findOne({
@@ -49,7 +51,7 @@ const updateExpense = async (req, res) => {
                 else {
                     expense.update({
                         amount: amount,
-                        spendingDate: spendingDate
+                        spendingDate: spendingDate,
                     });
                     res.status(200).json({ msg: "category UPDATED!!", expense });
                 }
@@ -60,6 +62,30 @@ const updateExpense = async (req, res) => {
         res.json("Error: " + err);
     }
 };
+const deleteExpense = async (req, res) => {
+    const { userId } = req.query;
+    try {
+        const expenseId = req.params.id;
+        Expenses_1.Expenses.destroy({
+            where: {
+                id: expenseId,
+                user_id: userId,
+            },
+        }).then((expense) => {
+            if (!expense) {
+                res.status(404).json({ msg: "expense Not found " });
+            }
+            else {
+                res.status(202).json({ msg: "Expense DELETED!!" });
+            }
+        });
+    }
+    catch (err) {
+        res.json("Error: " + err);
+    }
+};
 module.exports = {
-    createExpense, updateExpense
+    createExpense,
+    updateExpense,
+    deleteExpense,
 };

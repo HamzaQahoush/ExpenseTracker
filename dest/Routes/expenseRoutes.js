@@ -5,8 +5,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const router = express_1.default.Router();
-const expenseConroller = require('../Controllers/expenseController');
-const { createExpense, updateExpense } = expenseConroller;
-router.post('/expense', createExpense);
-router.put('/expense/:id', updateExpense);
+const expenseConroller = require("../Controllers/expenseController");
+const { createExpense, updateExpense, deleteExpense } = expenseConroller;
+router.post("/expense", createExpense);
+router.put("/expense/:id", updateExpense);
+router.delete("/expense/:id", deleteExpense);
 module.exports = router;
