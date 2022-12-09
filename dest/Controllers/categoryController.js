@@ -76,13 +76,13 @@ const editCategory = async (req, res) => {
                 },
             }).then((category) => {
                 if (!category) {
-                    res.json({ msg: "category not found" });
+                    res.status(404).json({ msg: "category not found" });
                 }
                 else {
                     category.update({
                         name: name,
                     });
-                    res.stjson({ msg: "category UPDATED!!", category });
+                    res.status(200).json({ msg: "category UPDATED!!", category });
                 }
             });
         }
@@ -91,8 +91,30 @@ const editCategory = async (req, res) => {
         res.json("Error: " + err);
     }
 };
+const listAllCategories = async (req, res) => {
+    try {
+        const userId = req.params.userID;
+        console.log(userId, "user>>>>> parms");
+        const allCategoriers = await Category_1.Category.findAll({
+            where: { user_id: userId },
+        });
+        if (allCategoriers.length === 0) {
+            res.status(404).json({ msg: "categories not found" });
+        }
+        else {
+            const allCategoriersData = allCategoriers.map((category) => {
+                return category.name;
+            });
+            res.json({ msg: "categories found", allCategoriersData });
+        }
+    }
+    catch (err) {
+        res.json("Error " + err);
+    }
+};
 module.exports = {
     createCategory,
     getCategory,
     editCategory,
+    listAllCategories,
 };

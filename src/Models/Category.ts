@@ -25,7 +25,9 @@ export class Category extends Model {
   name: string;
 
   @ForeignKey(() => User)
-  @Column
+  @Column({
+    onDelete: "CASCADE",
+  })
   user_id: number;
   @BelongsTo(() => User)
   user: User;

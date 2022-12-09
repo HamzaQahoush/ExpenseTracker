@@ -31,7 +31,9 @@ __decorate([
 ], Category.prototype, "name", void 0);
 __decorate([
     (0, sequelize_typescript_1.ForeignKey)(() => User_1.User),
-    sequelize_typescript_1.Column,
+    (0, sequelize_typescript_1.Column)({
+        onDelete: "CASCADE",
+    }),
     __metadata("design:type", Number)
 ], Category.prototype, "user_id", void 0);
 __decorate([

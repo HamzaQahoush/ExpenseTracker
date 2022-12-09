@@ -60,7 +60,7 @@ const getCategory = async (req: Request, res: Response) => {
 
 const editCategory = async (req: Request, res: Response) => {
   try {
-    const categID = req.params.id;
+    const categID: string = req.params.id;
 
     const { name } = req.body;
     if (!name) {
@@ -86,8 +86,29 @@ const editCategory = async (req: Request, res: Response) => {
   }
 };
 
+const listAllCategories = async (req: Request, res: Response) => {
+  try {
+    const userId = req.params.userID;
+    console.log(userId, "user>>>>> parms");
+
+    const allCategoriers = await Category.findAll({
+      where: { user_id: userId },
+    });
+    if (allCategoriers.length === 0) {
+      res.status(404).json({ msg: "categories not found" });
+    } else {
+      const allCategoriersData = allCategoriers.map((category: any) => {
+        return category.name;
+      });
+      res.json({ msg: "categories found", allCategoriersData });
+    }
+  } catch (err) {
+    res.json("Error " + err);
+  }
+};
 module.exports = {
   createCategory,
   getCategory,
   editCategory,
+  listAllCategories,
 };

@@ -5,7 +5,9 @@ import {
   Table,
   Model,
   AutoIncrement,
+  HasMany,
 } from "sequelize-typescript";
+import { Category } from "./Category";
 
 @Table({ timestamps: true, tableName: "users" })
 export class User extends Model {
@@ -47,4 +49,7 @@ export class User extends Model {
     defaultValue: sequelize.literal("now()"),
   })
   lastLogin: Date;
+
+  @HasMany(() => Category)
+  category: Category[];
 }
