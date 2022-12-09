@@ -65,8 +65,8 @@ const login = async (req, res) => {
         //if password matches wit the one in the database
         //go ahead and generate a cookie for the user
         res.cookie("jwt", token, { maxAge: 1 * 24 * 60 * 60, httpOnly: true });
-        // console.log("user", JSON.stringify(user, null, 2));
-        // console.log(token);
+        console.log("user", JSON.stringify(user, null, 2));
+        console.log(token);
         const { id, name, email, lastLogin, createdAt } = user;
         //send user data
 

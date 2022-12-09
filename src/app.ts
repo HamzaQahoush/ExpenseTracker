@@ -10,7 +10,7 @@ import connection from "./dbConfig";
 const userRoutes = require("./Routes/userRoutes");
 const CategoryRoutes= require('./Routes/categoryRoutes')
 const expenseRoutes= require('./Routes/expenseRoutes')
-const {requireAuth} = require('./Middleware/authMiddleware')
+const {requireAuth,checkUser} = require('./Middleware/authMiddleware')
 //setting up your port
 const PORT = process.env.PORT || 8080;
 
@@ -27,6 +27,7 @@ app.use(cookieParser());
 //   console.log("db has been re sync");
 // });
 
+app.get("*", checkUser)
 //routes for the user API
 app.use("/api/users", userRoutes);
 // routes for categories

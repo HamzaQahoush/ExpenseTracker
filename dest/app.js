@@ -13,7 +13,7 @@ const dbConfig_1 = __importDefault(require("./dbConfig"));
 const userRoutes = require("./Routes/userRoutes");
 const CategoryRoutes = require('./Routes/categoryRoutes');
 const expenseRoutes = require('./Routes/expenseRoutes');
-const { requireAuth } = require('./Middleware/authMiddleware');
+const { requireAuth, checkUser } = require('./Middleware/authMiddleware');
 //setting up your port
 const PORT = process.env.PORT || 8080;
 //assigning the variable app to express
@@ -26,6 +26,7 @@ app.use((0, cookie_parser_1.default)());
 // db.sequelize.sync({ force: true }).then(() => {
 //   console.log("db has been re sync");
 // });
+app.get("*", checkUser);
 //routes for the user API
 app.use("/api/users", userRoutes);
 // routes for categories
