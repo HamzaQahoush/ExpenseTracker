@@ -30,6 +30,36 @@ const createExpense = async (req, res) => {
         res.json("Error: " + err);
     }
 };
+const updateExpense = async (req, res) => {
+    try {
+        const expenseId = req.params.id;
+        const { amount: number, spendingDate } = req.body;
+        if (!amount) {
+            res.status(400).json({ msg: "Please fill all the expense you wanna change" });
+        }
+        else {
+            Expenses_1.Expenses.findOne({
+                where: {
+                    id: expenseId,
+                },
+            }).then((expense) => {
+                if (!expense) {
+                    res.status(404).json({ msg: "category not found" });
+                }
+                else {
+                    expense.update({
+                        amount: amount,
+                        spendingDate: spendingDate
+                    });
+                    res.status(200).json({ msg: "category UPDATED!!", expense });
+                }
+            });
+        }
+    }
+    catch (err) {
+        res.json("Error: " + err);
+    }
+};
 module.exports = {
-    createExpense,
+    createExpense, updateExpense
 };
