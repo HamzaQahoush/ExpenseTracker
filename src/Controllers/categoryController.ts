@@ -90,8 +90,7 @@ const editCategory = async (req: Request, res: Response) => {
 
 const listAllCategories = async (req: Request, res: Response) => {
   try {
-    const userId = req.params.userID;
-    console.log(userId, "user>>>>> parms");
+    const { userId } = req.query;
 
     const allCategoriers = await Category.findAll({
       where: { user_id: userId },

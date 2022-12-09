@@ -7,7 +7,7 @@ const { createCategory, getCategory, editCategory, listAllCategories } =
 
 router.post("/categories", createCategory);
 router.get("/categories/:id", getCategory);
-router.get("/allcategories/:userID", listAllCategories);
+router.get("/categories", listAllCategories);
 router.put("/categories/:id", editCategory);
 
 module.exports = router;

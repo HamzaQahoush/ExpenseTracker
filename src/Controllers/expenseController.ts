@@ -85,6 +85,21 @@ const deleteExpense = async (req: Request, res: Response) => {
     res.json("Error: " + err);
   }
 };
+
+const listExpense = async (req: Request, res: Response) => {
+  const { userId } = req.query;
+  
+
+  try {
+    const date = req.query
+    if (!date) {
+        res.status(404).json({ msg: "date  Not found " });
+    }
+    
+  } catch (err) {
+    res.json("Error: " + err);
+  }
+};
 module.exports = {
   createExpense,
   updateExpense,
