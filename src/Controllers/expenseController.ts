@@ -2,9 +2,9 @@ import { Category } from "../Models/Category";
 import { Request, Response } from "express";
 import { Expenses } from "../Models/Expenses";
 import { User } from "../Models/User";
-import { where } from "sequelize";
-
-const createExpense = async (req: Request, res: Response) => {
+import { where, Op } from "sequelize";
+import sequelize from "sequelize";
+export const createExpense = async (req: Request, res: Response) => {
   const { userId } = req.query;
 
   try {
@@ -34,7 +34,7 @@ const createExpense = async (req: Request, res: Response) => {
   }
 };
 
-const updateExpense = async (req: Request, res: Response) => {
+export const updateExpense = async (req: Request, res: Response) => {
   try {
     const expenseId: string = req.params.id;
 
@@ -64,7 +64,7 @@ const updateExpense = async (req: Request, res: Response) => {
     res.json("Error: " + err);
   }
 };
-const deleteExpense = async (req: Request, res: Response) => {
+export const deleteExpense = async (req: Request, res: Response) => {
   const { userId } = req.query;
 
   try {
@@ -86,22 +86,32 @@ const deleteExpense = async (req: Request, res: Response) => {
   }
 };
 
-const listExpense = async (req: Request, res: Response) => {
-  const { userId } = req.query;
-  
-
+export const listExpense = async (req: Request, res: Response) => {
   try {
-    const date = req.query
-    if (!date) {
-        res.status(404).json({ msg: "date  Not found " });
-    }
-    
+    const { userId, rdate } = req.query;
+    console.log("userId=", userId, "date=", rdate);
+    const date = req.query;
+    if (!date) res.status(404).json({ msg: "date not found " });
+
+    const allExpenses = await Expenses.findAll({
+      where: {
+        // spendingDate: rdate,
+        user_id: userId,
+      },
+      order: ["spendingDate"],
+    });
+    console.log(
+      "allExpenses=",
+      allExpenses[0].spendingDate.toLocaleDateString()
+    );
+    res.status(200).json(allExpenses);
   } catch (err) {
     res.json("Error: " + err);
   }
 };
-module.exports = {
-  createExpense,
-  updateExpense,
-  deleteExpense,
-};
+// module.exports = {
+//   createExpense,
+//   updateExpense,
+//   deleteExpense,
+//   listExpense,
+// };

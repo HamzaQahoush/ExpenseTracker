@@ -27,7 +27,7 @@ export class Expenses extends Model {
   category_id: number;
 
   @Column({
-    type: DataType.DATE,
+    type: DataType.DATEONLY,
     allowNull: true,
   })
   spendingDate: Date;

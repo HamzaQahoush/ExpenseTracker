@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.listExpense = exports.deleteExpense = exports.updateExpense = exports.createExpense = void 0;
 const Category_1 = require("../Models/Category");
 const Expenses_1 = require("../Models/Expenses");
 const createExpense = async (req, res) => {
@@ -30,6 +31,7 @@ const createExpense = async (req, res) => {
         res.json("Error: " + err);
     }
 };
+exports.createExpense = createExpense;
 const updateExpense = async (req, res) => {
     try {
         const expenseId = req.params.id;
@@ -62,6 +64,7 @@ const updateExpense = async (req, res) => {
         res.json("Error: " + err);
     }
 };
+exports.updateExpense = updateExpense;
 const deleteExpense = async (req, res) => {
     const { userId } = req.query;
     try {
@@ -84,20 +87,32 @@ const deleteExpense = async (req, res) => {
         res.json("Error: " + err);
     }
 };
+exports.deleteExpense = deleteExpense;
 const listExpense = async (req, res) => {
-    const { userId } = req.query;
     try {
+        const { userId, rdate } = req.query;
+        console.log("userId=", userId, "date=", rdate);
         const date = req.query;
-        if (!date) {
-            res.status(404).json({ msg: "date  Not found " });
-        }
+        if (!date)
+            res.status(404).json({ msg: "date not found " });
+        const allExpenses = await Expenses_1.Expenses.findAll({
+            where: {
+                // spendingDate: rdate,
+                user_id: userId,
+            },
+            order: ["spendingDate"],
+        });
+        console.log("allExpenses=", allExpenses[0].spendingDate.toLocaleDateString());
+        res.status(200).json(allExpenses);
     }
     catch (err) {
         res.json("Error: " + err);
     }
 };
-module.exports = {
-    createExpense,
-    updateExpense,
-    deleteExpense,
-};
+exports.listExpense = listExpense;
+// module.exports = {
+//   createExpense,
+//   updateExpense,
+//   deleteExpense,
+//   listExpense,
+// };
