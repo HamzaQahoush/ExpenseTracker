@@ -17,7 +17,7 @@ const requireAuth = (req, res, next) => {
                 res.send("Validation Error , Please Login Again ");
             }
             else {
-                console.log(decodedToken, "decodedToken");
+                // console.log(decodedToken, "decodedToken");
                 // token.userID= decodedToken.id
                 req.query = { ...req.query, userId: decodedToken.id };
                 next();
@@ -40,7 +40,6 @@ const checkUser = (req, res, next) => {
                 next();
             }
             else {
-                console.log(decodedToken.id, "user id >>>>>");
                 let user = await User_1.User.findByPk(decodedToken.id);
                 res.locals.user = user;
                 next();
@@ -53,4 +52,3 @@ const checkUser = (req, res, next) => {
     }
 };
 exports.checkUser = checkUser;
-// module.exports = { requireAuth, checkUser };

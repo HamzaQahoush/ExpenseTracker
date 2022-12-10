@@ -6,7 +6,12 @@ export const createExpense = async (req: Request, res: Response) => {
   const { userId } = req.query;
 
   try {
-    const { category_id, spendingDate, amount } = req.body;
+    const { category_id, spendingDate, amount } = req.body as {
+      category_id: string;
+      spendingDate: Date;
+      amount: number;
+    };
+
     if (!category_id || !amount) {
       return res.status(400).json({ msg: "Please Fill all fields" });
     }
@@ -36,7 +41,10 @@ export const updateExpense = async (req: Request, res: Response) => {
   try {
     const expenseId: string = req.params.id;
 
-    const { amount, spendingDate } = req.body;
+    const { amount, spendingDate } = req.body as {
+      amount: number;
+      spendingDate: Date;
+    };
     if (!amount) {
       res
         .status(400)

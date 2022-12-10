@@ -6,15 +6,17 @@ const createCategory = async (req, res) => {
     const { userId } = req.query;
     try {
         const { name } = req.body;
-        if (!name) {
-            res.status(400).json({ msg: "Please Fill all fields" });
+        if (!name || typeof name != "string") {
+            res
+                .status(400)
+                .json({ msg: "Please Fill all fields with correct format" });
         }
         else {
             const user_is_exist = await User_1.User.findOne({
                 where: { id: userId },
             });
             if (!user_is_exist) {
-                res.json({ msg: "user not found" });
+                res.status(404).json({ msg: "user not found" });
             }
             else {
                 const category_is_exist = await Category_1.Category.findOne({
@@ -32,7 +34,7 @@ const createCategory = async (req, res) => {
                     res.status(201).json({ msg: data });
                 }
                 else {
-                    res.json({ msg: "category already exist" });
+                    res.status(409).json({ msg: "category already exist" });
                 }
             }
         }
@@ -58,7 +60,7 @@ const getCategory = async (req, res) => {
                         .json({ msg: "You Do Not have this category  , please add one" });
                 }
                 else {
-                    res.json({ msg: "category found", category });
+                    res.status(200).json({ msg: "category found", category });
                 }
             });
         }
@@ -111,7 +113,7 @@ const listAllCategories = async (req, res) => {
             const allCategoriersData = allCategoriers.map((category) => {
                 return category.name;
             });
-            res.json({ msg: "categories found", allCategoriersData });
+            res.status(200).json({ msg: "categories found", allCategoriersData });
         }
     }
     catch (err) {

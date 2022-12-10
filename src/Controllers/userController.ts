@@ -8,7 +8,11 @@ import { User } from "../Models/User";
 //hashing users password before its saved to the database with bcrypt
 const signup = async (req: Request, res: Response) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password } = req.body as {
+      name: string;
+      email: string;
+      password: any;
+    };
     const data = {
       name,
       email,
@@ -66,12 +70,10 @@ const login = async (req, res) => {
         //send user data
 
         // create session for logged
-        return res
-          .status(201)
-          .send({
-            user: { id, name, email, lastLogin, createdAt },
-            token: token,
-          });
+        return res.status(201).send({
+          user: { id, name, email, lastLogin, createdAt },
+          token: token,
+        });
       } else {
         return res.status(401).send("Authentication failed");
       }

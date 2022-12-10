@@ -58,9 +58,7 @@ const login = async (req, res) => {
                 const { id, name, email, lastLogin, createdAt } = user;
                 //send user data
                 // create session for logged
-                return res
-                    .status(201)
-                    .send({
+                return res.status(201).send({
                     user: { id, name, email, lastLogin, createdAt },
                     token: token,
                 });
