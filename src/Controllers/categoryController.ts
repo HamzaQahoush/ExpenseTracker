@@ -3,10 +3,10 @@ import { Category } from "../Models/Category";
 import { Request, Response } from "express";
 
 const createCategory = async (req: Request, res: Response) => {
-  const {userId} = req.query
+  const { userId } = req.query;
 
   try {
-    const {name} = req.body;
+    const { name } = req.body;
     if (!name) {
       res.status(400).json({ msg: "Please Fill all fields" });
     } else {
@@ -28,7 +28,7 @@ const createCategory = async (req: Request, res: Response) => {
             name: name,
           };
           await Category.create(data);
-          res.status(201).json({ "msg": data});
+          res.status(201).json({ msg: data });
         } else {
           res.json({ msg: "category already exist" });
         }
@@ -40,16 +40,21 @@ const createCategory = async (req: Request, res: Response) => {
 };
 
 const getCategory = async (req: Request, res: Response) => {
+  const { userId } = req.query;
+
   const id = req.params.id;
   try {
     if (id) {
       const checkCategort = await Category.findOne({
         where: {
           id: id,
+          user_id: userId,
         },
       }).then((category: any) => {
         if (!category) {
-          res.json({ msg: "category not found" });
+          res
+            .status(404)
+            .json({ msg: "You Do Not have this category  , please add one" });
         } else {
           res.json({ msg: "category found", category });
         }
@@ -61,6 +66,8 @@ const getCategory = async (req: Request, res: Response) => {
 };
 
 const editCategory = async (req: Request, res: Response) => {
+  const { userId } = req.query;
+
   try {
     const categID: string = req.params.id;
 
@@ -71,6 +78,7 @@ const editCategory = async (req: Request, res: Response) => {
       Category.findOne({
         where: {
           id: categID,
+          user_id: userId,
         },
       }).then((category: any) => {
         if (!category) {

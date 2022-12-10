@@ -4,16 +4,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 //importing modules
-// const express = require("express");
 const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const dotnetenv = dotenv_1.default.config();
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const dbConfig_1 = __importDefault(require("./dbConfig"));
 const userRoutes = require("./Routes/userRoutes");
-const CategoryRoutes = require('./Routes/categoryRoutes');
-const expenseRoutes = require('./Routes/expenseRoutes');
-const { requireAuth, checkUser } = require('./Middleware/authMiddleware');
+const CategoryRoutes = require("./Routes/categoryRoutes");
+const expenseRoutes = require("./Routes/expenseRoutes");
+const { requireAuth, checkUser } = require("./Middleware/authMiddleware");
 //setting up your port
 const PORT = process.env.PORT || 8080;
 //assigning the variable app to express
@@ -22,16 +21,12 @@ const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: false }));
 app.use((0, cookie_parser_1.default)());
-//synchronizing the database and forcing it to false so we dont lose data
-// db.sequelize.sync({ force: true }).then(() => {
-//   console.log("db has been re sync");
-// });
 app.get("*", checkUser);
 //routes for the user API
 app.use("/api/users", userRoutes);
 // routes for categories
 app.use("/api/", requireAuth, CategoryRoutes);
-// routes for Expneses 
+// routes for Expneses
 app.use("/api/", requireAuth, expenseRoutes);
 const start = async () => {
     try {
@@ -39,30 +34,6 @@ const start = async () => {
         app.listen(PORT, async () => {
             console.log(`Server started on port ${PORT}`);
             console.log("Initializing Database:");
-            // const user = db.getRepository(User);
-            // const hamzaUser = new User();
-            // hamzaUser.name = "Hamza";
-            // hamzaUser.email = "ha@g.com";
-            // hamzaUser.password = "123";
-            // hamzaUser.lastLogin = new Date();
-            // // await user.create({ ...hamzaUser });
-            // await hamzaUser.save();
-            // const ali = new User();
-            // ali.name = "ali";
-            // ali.email = "ali@g.com";
-            // ali.password = "1299993";
-            // ali.lastLogin = new Date();
-            // await ali.save();
-            // const whoIs = await user.findOne({
-            //   where: {
-            //     id: 1,
-            //   },
-            // });
-            // console.log("whoIs=", whoIs);
-            // const insuraceCat = new Category();
-            // insuraceCat.name = "Insurace";
-            // insuraceCat.userId = 1;
-            // await insuraceCat.save();
         });
     }
     catch (error) {

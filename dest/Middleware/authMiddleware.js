@@ -3,6 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.checkUser = exports.requireAuth = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const User_1 = require("../Models/User");
 const requireAuth = (req, res, next) => {
@@ -27,6 +28,7 @@ const requireAuth = (req, res, next) => {
         res.json({ msg: "You Should be logged In first" });
     }
 };
+exports.requireAuth = requireAuth;
 const checkUser = (req, res, next) => {
     const token = req.cookies.jwt;
     const secretKey = process.env.secretKey;
@@ -50,4 +52,5 @@ const checkUser = (req, res, next) => {
         next();
     }
 };
-module.exports = { requireAuth, checkUser };
+exports.checkUser = checkUser;
+// module.exports = { requireAuth, checkUser };

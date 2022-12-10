@@ -91,7 +91,6 @@ exports.deleteExpense = deleteExpense;
 const listExpense = async (req, res) => {
     try {
         const { userId, rdate } = req.query;
-        console.log("userId=", userId, "date=", rdate);
         const date = req.query;
         if (!date)
             res.status(404).json({ msg: "date not found " });
@@ -101,18 +100,17 @@ const listExpense = async (req, res) => {
                 user_id: userId,
             },
             order: ["spendingDate"],
+        }).then((expneses) => {
+            if (expneses.length === 0) {
+                res.status(404).json({ msg: "expense Not found " });
+            }
+            else {
+                res.status(200).json({ msg: "category founded!!!", expneses });
+            }
         });
-        console.log("allExpenses=", allExpenses[0].spendingDate.toLocaleDateString());
-        res.status(200).json(allExpenses);
     }
     catch (err) {
         res.json("Error: " + err);
     }
 };
 exports.listExpense = listExpense;
-// module.exports = {
-//   createExpense,
-//   updateExpense,
-//   deleteExpense,
-//   listExpense,
-// };

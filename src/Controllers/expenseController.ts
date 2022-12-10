@@ -1,9 +1,7 @@
 import { Category } from "../Models/Category";
 import { Request, Response } from "express";
 import { Expenses } from "../Models/Expenses";
-import { User } from "../Models/User";
-import { where, Op } from "sequelize";
-import sequelize from "sequelize";
+
 export const createExpense = async (req: Request, res: Response) => {
   const { userId } = req.query;
 
@@ -89,7 +87,6 @@ export const deleteExpense = async (req: Request, res: Response) => {
 export const listExpense = async (req: Request, res: Response) => {
   try {
     const { userId, rdate } = req.query;
-    console.log("userId=", userId, "date=", rdate);
     const date = req.query;
     if (!date) res.status(404).json({ msg: "date not found " });
 
@@ -99,19 +96,14 @@ export const listExpense = async (req: Request, res: Response) => {
         user_id: userId,
       },
       order: ["spendingDate"],
+    }).then((expneses) => {
+      if (expneses.length === 0) {
+        res.status(404).json({ msg: "expense Not found " });
+      } else {
+        res.status(200).json({ msg: "category founded!!!", expneses });
+      }
     });
-    console.log(
-      "allExpenses=",
-      allExpenses[0].spendingDate.toLocaleDateString()
-    );
-    res.status(200).json(allExpenses);
   } catch (err) {
     res.json("Error: " + err);
   }
 };
-// module.exports = {
-//   createExpense,
-//   updateExpense,
-//   deleteExpense,
-//   listExpense,
-// };

@@ -29,7 +29,7 @@ const createCategory = async (req, res) => {
                         name: name,
                     };
                     await Category_1.Category.create(data);
-                    res.status(201).json({ "msg": data });
+                    res.status(201).json({ msg: data });
                 }
                 else {
                     res.json({ msg: "category already exist" });
@@ -42,16 +42,20 @@ const createCategory = async (req, res) => {
     }
 };
 const getCategory = async (req, res) => {
+    const { userId } = req.query;
     const id = req.params.id;
     try {
         if (id) {
             const checkCategort = await Category_1.Category.findOne({
                 where: {
                     id: id,
+                    user_id: userId,
                 },
             }).then((category) => {
                 if (!category) {
-                    res.json({ msg: "category not found" });
+                    res
+                        .status(404)
+                        .json({ msg: "You Do Not have this category  , please add one" });
                 }
                 else {
                     res.json({ msg: "category found", category });
@@ -64,6 +68,7 @@ const getCategory = async (req, res) => {
     }
 };
 const editCategory = async (req, res) => {
+    const { userId } = req.query;
     try {
         const categID = req.params.id;
         const { name } = req.body;
@@ -74,6 +79,7 @@ const editCategory = async (req, res) => {
             Category_1.Category.findOne({
                 where: {
                     id: categID,
+                    user_id: userId,
                 },
             }).then((category) => {
                 if (!category) {

@@ -13,11 +13,10 @@ const requireAuth = (req: Request, res: Response, next: NextFunction) => {
         console.log(err.message);
         res.send("Validation Error , Please Login Again ");
       } else {
-        console.log(decodedToken, "decodedToken")
+        console.log(decodedToken, "decodedToken");
 
-      // token.userID= decodedToken.id
-      req.query ={...req.query,userId:decodedToken.id}
-    
+        // token.userID= decodedToken.id
+        req.query = { ...req.query, userId: decodedToken.id };
 
         next();
       }
@@ -51,5 +50,5 @@ const checkUser = (req: Request, res: Response, next: NextFunction) => {
     next();
   }
 };
-
-module.exports = { requireAuth, checkUser };
+export { requireAuth, checkUser };
+// module.exports = { requireAuth, checkUser };

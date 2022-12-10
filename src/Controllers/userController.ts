@@ -1,14 +1,12 @@
-import  bcrypt from "bcrypt";
-// const db = require("../Models");
+import bcrypt from "bcrypt";
+import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 
-// Assigning users to the variable User
-// const User = db.users;
 import { User } from "../Models/User";
 
 //signing a user up
 //hashing users password before its saved to the database with bcrypt
-const signup = async (req, res) => {
+const signup = async (req: Request, res: Response) => {
   try {
     const { name, email, password } = req.body;
     const data = {
@@ -28,11 +26,9 @@ const signup = async (req, res) => {
       });
 
       res.cookie("jwt", token, { maxAge: 1 * 24 * 60 * 60, httpOnly: true });
-      // console.log("user", JSON.stringify(user, null, 2));
-      // console.log(token);
-      //send users details
+
       const { id, name, email, lastLogin, createdAt } = user;
-      return res.status(201).send({"user": {id, name, email, createdAt}});
+      return res.status(201).send({ user: { id, name, email, createdAt } });
     } else {
       return res.status(409).send("Details are not correct");
     }
@@ -48,7 +44,7 @@ const login = async (req, res) => {
     const { email, password } = req.body;
 
     //find a user by their email
-    const user = await User.findOne({ where: {email:email} });
+    const user = await User.findOne({ where: { email: email } });
 
     //if user email is found, compare password with bcrypt
     if (user) {
@@ -65,13 +61,17 @@ const login = async (req, res) => {
         //if password matches wit the one in the database
         //go ahead and generate a cookie for the user
         res.cookie("jwt", token, { maxAge: 1 * 24 * 60 * 60, httpOnly: true });
-        console.log("user", JSON.stringify(user, null, 2));
-        console.log(token);
+
         const { id, name, email, lastLogin, createdAt } = user;
         //send user data
 
         // create session for logged
-        return res.status(201).send({"user": {id, name, email, lastLogin, createdAt}, "token": token});
+        return res
+          .status(201)
+          .send({
+            user: { id, name, email, lastLogin, createdAt },
+            token: token,
+          });
       } else {
         return res.status(401).send("Authentication failed");
       }
